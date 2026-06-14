@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 // Import routes
@@ -32,10 +33,8 @@ mongoose.connect(process.env.MONGODB_URI)
 });
 
 // ==================== ROUTES ====================
-// Test route
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to Backend Cafe API!' });
-});
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, 'frontend')));
 
 // Auth routes
 app.use('/api/auth', authRoutes);
@@ -45,6 +44,11 @@ app.use('/api/menu', menuRoutes);
 
 // Order routes
 app.use('/api/orders', orderRoutes);
+
+// Fallback to index.html for the root route
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+});
 
 // ==================== START SERVER ====================
 // Define port (use environment variable or default to 5000)
