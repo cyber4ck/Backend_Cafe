@@ -14,6 +14,15 @@ window.addEventListener('load', () => {
     return;
   }
 
+  // Show admin link if user is admin
+  try {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.role === 'admin') {
+      const adminLink = document.getElementById('adminLink');
+      if (adminLink) adminLink.style.display = 'inline-block';
+    }
+  } catch (e) {}
+
   // Load menu items
   loadMenuItems();
   // Load cart from localStorage
