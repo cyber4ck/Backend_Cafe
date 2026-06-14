@@ -4,7 +4,21 @@ const MenuItem = require('../models/MenuItem');
 // Anyone can see the menu (public route)
 exports.getAllMenuItems = async (req, res) => {
   try {
-    const menuItems = await MenuItem.find({ available: true });
+    // Admins (with valid token) can see all items including unavailable ones
+    let filter = { available: true };
+    const token = req.headers.authorization?.split(' ')[1];
+    if (token) {
+      try {
+        const jwt = require('jsonwebtoken');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (decoded.role === 'admin') {
+          filter = {};
+        }
+      } catch (e) {
+        // invalid token, ignore and show only available items
+      }
+    }
+    const menuItems = await MenuItem.find(filter);
 
     res.json({
       message: 'Menu items fetched successfully!',
