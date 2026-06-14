@@ -1,3 +1,4 @@
+const API_URL = window.location.origin; // Works both locally and when deployed
 // ==================== SCROLL ANIMATIONS ====================
 const observerOptions = {
   threshold: 0.1,
