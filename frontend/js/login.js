@@ -1,5 +1,5 @@
 const API_URL = 'http://localhost:5000'; // Backend server URL
-
+const API_URL = window.location.origin; // Works both locally and when deployed
 // Get form and message elements
 const loginForm = document.getElementById('loginForm');
 const messageDiv = document.getElementById('message');
