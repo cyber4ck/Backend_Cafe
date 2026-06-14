@@ -1,5 +1,5 @@
 const API_URL = window.location.origin; // Works both locally and when deployed
-const API_URL = 'http://localhost:5000';
+
 let cart = {}; // { itemId: { name, price, quantity, image } }
 let menuItems = [];
 let filteredItems = [];
