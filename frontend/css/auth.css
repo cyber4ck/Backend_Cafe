@@ -1,0 +1,64 @@
+/* AUTH PAGES */
+.auth-page{
+  min-height:100vh;padding-top:66px;
+  display:grid;grid-template-columns:1fr 1fr;
+}
+.auth-left{
+  display:flex;align-items:center;justify-content:center;
+  padding:60px 52px;background:var(--paper);
+}
+.auth-form-wrap{width:100%;max-width:380px}
+.auth-title{font-family:var(--hand);font-size:2.4rem;font-weight:700;color:var(--ink);margin-bottom:6px;line-height:1.1}
+.auth-sub{font-size:.9rem;color:var(--ink2);margin-bottom:36px}
+
+.auth-submit{margin-top:24px}
+.auth-divider{
+  display:flex;align-items:center;gap:12px;margin:22px 0;
+  font-family:var(--hand);font-size:.95rem;color:var(--ink2);
+}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:2px;background:var(--ink);opacity:.12}
+.auth-switch{text-align:center;font-size:.9rem;color:var(--ink2);font-family:var(--hand)}
+.auth-switch a{color:var(--amber);font-weight:700}
+.auth-switch a:hover{color:var(--ink)}
+
+/* right panel - doodle illustration */
+.auth-right{
+  background:var(--paper2);
+  border-left:2.5px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  padding:60px 48px;position:relative;overflow:hidden;
+}
+.auth-right-inner{
+  display:flex;flex-direction:column;align-items:center;gap:28px;
+  position:relative;z-index:1;width:100%;max-width:300px;
+}
+.auth-doodle{
+  width:100%;
+  filter:drop-shadow(4px 4px 0 rgba(212,130,10,.18));
+}
+.auth-code-card{
+  background:var(--paper);border:2.5px solid var(--ink);
+  border-radius:var(--sr2);padding:18px 22px;
+  box-shadow:4px 4px 0 var(--ink);
+  width:100%;
+}
+.auth-code-title{
+  font-family:var(--hand);font-size:.85rem;color:var(--ink2);
+  margin-bottom:10px;letter-spacing:.04em;
+}
+.code-line{display:flex;gap:10px;font-size:.85rem;margin-bottom:4px;font-family:monospace}
+.code-kw{color:var(--amber);font-weight:700}
+.code-str{color:var(--teal)}
+.code-cmt{color:rgba(74,55,40,.45)}
+
+/* scatter doodles in auth bg */
+.auth-bg-doodle{
+  position:absolute;opacity:.06;pointer-events:none;
+}
+
+@media(max-width:860px){
+  .auth-page{grid-template-columns:1fr}
+  .auth-right{display:none}
+  .auth-left{padding:44px 20px}
+  .auth-form-wrap{max-width:100%}
+}

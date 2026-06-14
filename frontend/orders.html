@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Orders — Backend Cafe</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/orders.css">
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-logo" onclick="window.location.href='index.html'">☕ Backend Cafe</div>
+  <div class="nav-links">
+    <a href="menu.html" class="nav-link">← Menu</a>
+    <a href="#" class="nav-link danger" onclick="logout()">Logout</a>
+  </div>
+</nav>
+
+<div class="orders-page">
+  <div class="orders-header">
+    <!-- doodle person checking phone -->
+    <svg class="orders-header-doodle" viewBox="0 0 140 175" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- person looking at phone/order -->
+      <circle cx="70" cy="42" r="28" fill="#F5EDD6" stroke="#1C1209" stroke-width="2.5"/>
+      <circle cx="61" cy="38" r="3.5" fill="#1C1209"/>
+      <circle cx="79" cy="38" r="3.5" fill="#1C1209"/>
+      <path d="M61 52 Q70 58 79 52" stroke="#1C1209" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M44 34 Q48 14 70 14 Q92 14 97 32" stroke="#1C1209" stroke-width="2.5" fill="#1C1209"/>
+      <!-- body -->
+      <path d="M52 70 Q38 88 36 120" stroke="#1C1209" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <path d="M88 70 Q102 88 104 120" stroke="#1C1209" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <path d="M38 100 Q70 112 102 100" fill="#F5EDD6" stroke="#1C1209" stroke-width="2"/>
+      <!-- phone in hands -->
+      <rect x="50" y="108" width="40" height="62" rx="5" fill="#1C1209" stroke="#1C1209" stroke-width="2"/>
+      <rect x="54" y="112" width="32" height="52" rx="3" fill="#D4820A" opacity=".85"/>
+      <line x1="58" y1="122" x2="72" y2="122" stroke="#F5EDD6" stroke-width="1.5" opacity=".7"/>
+      <line x1="58" y1="130" x2="82" y2="130" stroke="#F5EDD6" stroke-width="1.5" opacity=".7"/>
+      <line x1="58" y1="138" x2="74" y2="138" stroke="#F5EDD6" stroke-width="1.5" opacity=".7"/>
+      <!-- arms -->
+      <path d="M42 90 Q46 108 52 118" stroke="#1C1209" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <path d="M98 90 Q94 108 88 118" stroke="#1C1209" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div class="orders-header-inner">
+      <div class="section-tag">Your Account</div>
+      <h1 class="section-heading">Order History 📦</h1>
+      <p class="section-sub">Track all your orders and reorder your favourites</p>
+    </div>
+  </div>
+
+  <div class="orders-inner">
+    <div id="ordersList">
+      <div style="text-align:center;padding:80px 0;font-family:var(--hand);color:var(--ink2)">
+        <div class="spinner"></div>
+        <p>Fetching your orders...</p>
+      </div>
+    </div>
+
+    <div id="emptyState" class="empty-orders" style="display:none">
+      <!-- OpenDoodles-style person shrugging / wandering -->
+      <svg class="empty-doodle" viewBox="0 0 200 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="60" r="38" fill="#F5EDD6" stroke="#1C1209" stroke-width="3"/>
+        <!-- shrug face -->
+        <circle cx="88" cy="54" r="5" fill="#1C1209"/>
+        <circle cx="112" cy="54" r="5" fill="#1C1209"/>
+        <path d="M90 74 Q100 70 110 74" stroke="#1C1209" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <!-- raised eyebrow shrug -->
+        <path d="M83 46 Q89 41 95 44" stroke="#1C1209" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <path d="M105 42 Q111 37 117 40" stroke="#1C1209" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <path d="M62 52 Q66 28 100 28 Q134 28 140 50" stroke="#1C1209" stroke-width="3" fill="#1C1209"/>
+        <!-- body -->
+        <path d="M84 98 Q66 118 62 160" stroke="#1C1209" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <path d="M116 98 Q134 118 138 160" stroke="#1C1209" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <path d="M64 138 Q100 152 136 138" fill="#F5EDD6" stroke="#1C1209" stroke-width="2.5"/>
+        <!-- shrug arms up -->
+        <path d="M66 116 Q44 100 30 86" stroke="#1C1209" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <circle cx="26" cy="82" r="11" fill="#F5EDD6" stroke="#1C1209" stroke-width="2.5"/>
+        <path d="M134 116 Q156 100 170 86" stroke="#1C1209" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <circle cx="174" cy="82" r="11" fill="#F5EDD6" stroke="#1C1209" stroke-width="2.5"/>
+        <!-- legs -->
+        <path d="M68 160 Q60 198 58 235" stroke="#1C1209" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <path d="M132 160 Q140 198 142 235" stroke="#1C1209" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <path d="M48 235 Q38 244 60 247 Q72 249 74 241 L58 235Z" fill="#1C1209"/>
+        <path d="M132 235 Q122 244 144 247 Q156 249 158 241 L142 235Z" fill="#1C1209"/>
+        <!-- question marks -->
+        <text x="10" y="55" font-size="20" fill="#D4820A">?</text>
+        <text x="175" y="60" font-size="18" fill="#D4820A">?</text>
+      </svg>
+      <h2 class="empty-title">No orders yet!</h2>
+      <p class="empty-desc">Looks empty here. Time to fix that ☕</p>
+      <a href="menu.html" class="btn btn-fill btn-lg">Browse Menu →</a>
+    </div>
+  </div>
+</div>
+
+<script src="js/orders.js"></script>
+<script>
+  // Override displayOrders to use new doodle card classes
+  window.displayOrders = function(orders) {
+    const list = document.getElementById('ordersList');
+    const empty = document.getElementById('emptyState');
+    if (!orders || orders.length === 0) {
+      list.style.display = 'none';
+      empty.style.display = 'block';
+      return;
+    }
+    list.style.display = 'block';
+    empty.style.display = 'none';
+    list.innerHTML = orders.map(order => {
+      const date = new Date(order.createdAt).toLocaleDateString('en-IN',{
+        year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'
+      });
+      const itemsHTML = order.items.map(item=>`
+        <div class="oi-row">
+          <div>
+            <div class="oi-name">${item.menuItem.name}</div>
+            <div class="oi-qty">× ${item.quantity}</div>
+          </div>
+          <div class="oi-price">₹${item.price*item.quantity}</div>
+        </div>
+      `).join('');
+      const total = order.totalPrice + 50;
+      const canCancel = order.status === 'pending';
+      return `
+        <div class="order-card">
+          <div class="order-card-head">
+            <div>
+              <div class="order-id-num">#${order._id.substring(0,8).toUpperCase()}</div>
+              <div class="order-date">${date}</div>
+            </div>
+            <span class="order-badge status-${order.status}">${order.status}</span>
+            <div class="order-total-amt">₹${total}</div>
+          </div>
+          <div class="order-items-list">${itemsHTML}</div>
+          <div class="order-meta">
+            <div>
+              <div class="meta-lbl">Delivery Address</div>
+              <div class="meta-val">${order.deliveryAddress}</div>
+            </div>
+          </div>
+          <div class="order-actions">
+            <button class="btn" onclick="reorder('${order._id}')">Order Again</button>
+            ${canCancel
+              ? `<button class="btn btn-danger" onclick="cancelOrder('${order._id}')">Cancel</button>`
+              : `<button class="btn" disabled style="opacity:.4;cursor:not-allowed">Cannot Cancel</button>`}
+          </div>
+        </div>
+      `;
+    }).join('');
+  };
+</script>
+</body>
+</html>

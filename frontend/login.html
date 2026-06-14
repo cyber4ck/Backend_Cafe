@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Backend Cafe</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-logo" onclick="window.location.href='index.html'">☕ Backend Cafe</div>
+  <div class="nav-links">
+    <a href="signup.html" class="nav-link">New here? Sign up →</a>
+  </div>
+</nav>
+
+<div class="auth-page">
+  <!-- FORM -->
+  <div class="auth-left">
+    <div class="auth-form-wrap">
+      <div class="section-tag">Welcome back</div>
+      <h1 class="auth-title">Log in ☕</h1>
+      <p class="auth-sub">Enter your credentials to get your caffeine fix.</p>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <div class="auth-submit">
+          <button type="submit" class="btn btn-fill btn-lg btn-full">Log in →</button>
+        </div>
+      </form>
+
+      <div class="auth-divider">or</div>
+      <p class="auth-switch">No account? <a href="signup.html">Create one free</a></p>
+      <div id="message"></div>
+    </div>
+  </div>
+
+  <!-- DOODLE SIDE — OpenDoodles "Strolling" style character with coffee -->
+  <div class="auth-right">
+    <!-- bg scatter doodles -->
+    <svg class="auth-bg-doodle" style="top:10%;left:5%;width:80px" viewBox="0 0 80 80"><circle cx="40" cy="40" r="35" stroke="#1C1209" stroke-width="2.5" fill="none" stroke-dasharray="7 5"/></svg>
+    <svg class="auth-bg-doodle" style="bottom:12%;right:8%;width:60px" viewBox="0 0 60 60"><rect x="5" y="5" width="50" height="50" rx="6" stroke="#1C1209" stroke-width="2" fill="none" stroke-dasharray="6 4"/></svg>
+    <svg class="auth-bg-doodle" style="top:40%;right:5%;width:50px" viewBox="0 0 50 50"><path d="M25 5 L30 18 L44 18 L33 27 L37 40 L25 32 L13 40 L17 27 L6 18 L20 18Z" stroke="#D4820A" stroke-width="2" fill="none"/></svg>
+
+    <div class="auth-right-inner">
+      <!-- Strolling doodle person with coffee cup -->
+      <svg class="auth-doodle" viewBox="0 0 280 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- coffee cup in hand -->
+        <path d="M60 140 L65 180 Q80 190 95 180 L100 140 Z" fill="#F5EDD6" stroke="#1C1209" stroke-width="2.5"/>
+        <ellipse cx="80" cy="140" rx="20" ry="7" fill="#F5EDD6" stroke="#1C1209" stroke-width="2.5"/>
+        <path d="M100 150 Q110 150 110 160 Q110 170 100 170" stroke="#1C1209" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <ellipse cx="80" cy="140" rx="17" ry="5.5" fill="#D4820A" opacity=".5"/>
+        <!-- steam -->
+        <path d="M70 128 Q74 118 70 110" stroke="#1C1209" stroke-width="2" stroke-linecap="round" fill="none">
+          <animate attributeName="d" values="M70 128 Q74 118 70 110;M70 128 Q66 118 70 110;M70 128 Q74 118 70 110" dur="2s" repeatCount="indefinite"/>
+        </path>
+        <path d="M82 122 Q86 110 82 100" stroke="#1C1209" stroke-width="2" stroke-linecap="round" fill="none">
+          <animate attributeName="d" values="M82 122 Q86 110 82 100;M82 122 Q78 110 82 100;M82 122 Q86 110 82 100" dur="2.5s" repeatCount="indefinite"/>
+        </path>
+
+        <!-- person body - strolling/walking pose -->
+        <!-- head -->
+        <circle cx="180" cy="75" r="40" fill="#F5EDD6" stroke="#1C1209" stroke-width="3"/>
+        <!-- face - happy -->
+        <circle cx="168" cy="70" r="4.5" fill="#1C1209"/>
+        <circle cx="192" cy="70" r="4.5" fill="#1C1209"/>
+        <path d="M168 88 Q180 96 192 88" stroke="#1C1209" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <!-- blush marks -->
+        <ellipse cx="161" cy="80" rx="8" ry="4" fill="#D4820A" opacity=".2"/>
+        <ellipse cx="199" cy="80" rx="8" ry="4" fill="#D4820A" opacity=".2"/>
+        <!-- hair - wavy -->
+        <path d="M142 62 Q146 36 180 34 Q214 34 220 60" stroke="#1C1209" stroke-width="3" fill="#1C1209"/>
+        <path d="M142 62 Q138 72 142 82" stroke="#1C1209" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+
+        <!-- body (shirt) -->
+        <path d="M148 115 Q130 140 128 185 Q126 220 140 255" stroke="#1C1209" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <path d="M212 115 Q228 140 230 185 Q232 220 218 255" stroke="#1C1209" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <path d="M132 155 Q180 170 228 155" fill="#F5EDD6" stroke="#1C1209" stroke-width="2.5"/>
+        <!-- shirt detail -->
+        <path d="M168 120 Q180 130 192 120" stroke="#1C1209" stroke-width="2" fill="none" opacity=".4"/>
+
+        <!-- arm reaching out toward coffee cup -->
+        <path d="M132 140 Q100 158 96 175" stroke="#1C1209" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <!-- other arm -->
+        <path d="M228 140 Q248 160 250 185" stroke="#1C1209" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <circle cx="250" cy="190" r="11" fill="#F5EDD6" stroke="#1C1209" stroke-width="2.5"/>
+
+        <!-- legs walking -->
+        <path d="M140 255 Q132 300 120 340" stroke="#1C1209" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <path d="M218 255 Q228 300 240 335" stroke="#1C1209" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <!-- shoes -->
+        <path d="M110 340 Q98 350 120 353 Q132 355 135 347 L120 340 Z" fill="#1C1209"/>
+        <path d="M232 335 Q220 346 242 350 Q254 352 257 344 L242 335 Z" fill="#1C1209"/>
+
+        <!-- floating elements -->
+        <text x="40" y="75" font-size="20" fill="#D4820A">♥</text>
+        <text x="238" y="95" font-size="16" fill="#D4820A">★</text>
+      </svg>
+
+      <div class="auth-code-card">
+        <div class="auth-code-title">// auth request</div>
+        <div class="code-line"><span class="code-kw">POST</span> <span class="code-str">/api/auth/login</span></div>
+        <div class="code-line"><span class="code-cmt">// verifying credentials...</span></div>
+        <div class="code-line"><span class="code-kw">200</span> <span class="code-str">token granted ✓</span></div>
+        <div class="code-line"><span class="code-cmt">// coffee.exe starting...</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/login.js"></script>
+</body>
+</html>

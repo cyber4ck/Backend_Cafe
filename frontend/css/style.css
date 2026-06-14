@@ -1,0 +1,180 @@
+/* =========================================
+   BACKEND CAFE — Global Doodle Theme
+   OpenDoodles inspired: sketchy, warm, human
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;500;600;700;800&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+:root{
+  --paper:#FDFAF3;
+  --paper2:#F5EDD6;
+  --paper3:#EEE0B8;
+  --ink:#1C1209;
+  --ink2:#4A3728;
+  --amber:#D4820A;
+  --amber2:#F0A020;
+  --red:#C0392B;
+  --green:#2D8A4A;
+  --teal:#2A8A7E;
+  --hand:'Caveat',cursive;
+  --body:'Nunito',sans-serif;
+  --sr:255px 15px 225px 15px/15px 225px 15px 255px;
+  --sr2:155px 8px 130px 8px/8px 140px 8px 155px;
+}
+
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+/* subtle dot grid */
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(circle at 1px 1px,rgba(180,130,60,.07) 1px,transparent 0);
+  background-size:28px 28px;
+}
+
+a{color:inherit;text-decoration:none}
+
+/* ---- NAVBAR ---- */
+.navbar{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:66px;
+  background:rgba(253,250,243,.95);
+  backdrop-filter:blur(8px);
+  border-bottom:2.5px solid var(--ink);
+}
+.nav-logo{
+  font-family:var(--hand);font-size:1.6rem;font-weight:700;
+  color:var(--ink);cursor:pointer;display:flex;align-items:center;gap:8px;
+}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-link{
+  font-family:var(--hand);font-size:1.1rem;font-weight:600;
+  color:var(--ink2);transition:color .15s;
+}
+.nav-link:hover{color:var(--amber)}
+.nav-link.danger{color:var(--red)}
+
+/* ---- BUTTONS ---- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:.6rem 1.5rem;
+  font-family:var(--hand);font-size:1.1rem;font-weight:700;
+  border:2.5px solid var(--ink);
+  border-radius:var(--sr2);
+  cursor:pointer;position:relative;overflow:visible;
+  transition:transform .15s,box-shadow .15s;
+  background:var(--paper);color:var(--ink);
+}
+.btn::after{
+  content:'';
+  position:absolute;top:4px;left:3px;right:-4px;bottom:-5px;
+  border:2px solid var(--ink);border-radius:var(--sr2);z-index:-1;
+}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+.btn:active{transform:translate(1px,1px);box-shadow:none}
+
+.btn-fill{background:var(--amber);color:var(--ink)}
+.btn-fill:hover{box-shadow:5px 5px 0 var(--ink)}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn-ink:hover{box-shadow:5px 5px 0 rgba(28,18,9,.35)}
+.btn-danger{background:var(--paper);color:var(--red);border-color:var(--red)}
+.btn-danger::after{border-color:var(--red)}
+.btn-lg{padding:.85rem 2rem;font-size:1.2rem}
+.btn-full{width:100%}
+
+/* ---- FIELDS ---- */
+.field{margin-bottom:20px}
+.field label{
+  display:block;font-family:var(--hand);font-size:1rem;font-weight:700;
+  color:var(--ink);margin-bottom:6px;
+}
+.field input{
+  width:100%;padding:.7rem 1rem;
+  background:var(--paper);border:2px solid var(--ink);
+  border-radius:var(--sr2);
+  font-family:var(--body);font-size:.95rem;color:var(--ink);
+  outline:none;transition:box-shadow .15s;
+}
+.field input::placeholder{color:rgba(74,55,40,.4)}
+.field input:focus{box-shadow:3px 3px 0 var(--amber)}
+
+/* ---- MESSAGE ---- */
+#message{display:none;margin-top:14px;padding:10px 14px;border-radius:var(--sr2);font-family:var(--hand);font-size:1rem}
+#message.success{display:block;background:rgba(45,138,74,.1);border:2px solid var(--green);color:var(--green)}
+#message.error{display:block;background:rgba(192,57,43,.08);border:2px solid var(--red);color:var(--red)}
+
+/* ---- SECTION LABELS ---- */
+.section-tag{
+  font-family:var(--hand);font-size:1.05rem;color:var(--amber);
+  margin-bottom:6px;display:flex;align-items:center;gap:6px;
+}
+.section-tag::before{content:'✦';font-size:.8rem}
+.section-heading{
+  font-family:var(--hand);font-size:clamp(2rem,4vw,3rem);
+  font-weight:700;line-height:1.1;color:var(--ink);margin-bottom:12px;
+}
+.section-sub{font-size:.95rem;color:var(--ink2);max-width:480px;line-height:1.7}
+
+/* ---- SKETCHY CARD ---- */
+.sketch-card{
+  background:var(--paper);border:2.5px solid var(--ink);
+  border-radius:var(--sr);position:relative;
+  transition:transform .15s,box-shadow .15s;
+}
+.sketch-card::after{
+  content:'';
+  position:absolute;top:4px;left:3px;right:-4px;bottom:-5px;
+  border:2px solid var(--ink);border-radius:var(--sr);z-index:-1;
+}
+.sketch-card:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+
+/* ---- SPINNER ---- */
+.spinner{
+  width:32px;height:32px;
+  border:3px solid rgba(28,18,9,.15);
+  border-top-color:var(--amber);
+  border-radius:50%;animation:spin .8s linear infinite;
+  margin:0 auto 16px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---- TOAST ---- */
+.toast{
+  position:fixed;top:78px;right:24px;z-index:3000;
+  background:var(--ink);color:var(--paper);
+  padding:12px 20px;border:2px solid var(--ink);
+  border-radius:var(--sr2);
+  font-family:var(--hand);font-size:1.05rem;
+  box-shadow:4px 4px 0 var(--amber);
+  animation:toastIn .3s ease;
+}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+
+/* ---- DOODLE WAVY UNDERLINE ---- */
+.wavy{
+  background:linear-gradient(var(--amber),var(--amber)) no-repeat center bottom/100% 3px,
+             url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 6'%3E%3Cpath d='M0 3 Q10 0 20 3 Q30 6 40 3 Q50 0 60 3 Q70 6 80 3' stroke='%23D4820A' stroke-width='2' fill='none'/%3E%3C/svg%3E") repeat-x bottom/80px 6px;
+  padding-bottom:6px;
+}
+
+/* ---- FADE IN ---- */
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease}
+.fade-in.visible{opacity:1;transform:none}
+
+/* scrollbar */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--paper2)}
+::-webkit-scrollbar-thumb{background:var(--ink2);border-radius:10px}
+
+@media(max-width:900px){
+  .navbar{padding:0 20px}
+}

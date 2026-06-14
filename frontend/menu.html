@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu — Backend Cafe</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/menu.css">
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-logo" onclick="window.location.href='index.html'">☕ Backend Cafe</div>
+  <div class="nav-links">
+    <a href="orders.html" class="nav-link">My Orders</a>
+    <a href="#" class="nav-link danger" onclick="logout()">Logout</a>
+  </div>
+</nav>
+
+<div class="menu-page">
+  <!-- HEADER with doodle accent -->
+  <div class="menu-header">
+    <!-- doodle person peeking from corner -->
+    <svg class="menu-header-doodle" viewBox="0 0 160 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- floating dev holding laptop -->
+      <circle cx="80" cy="50" r="32" fill="#F5EDD6" stroke="#1C1209" stroke-width="2.5"/>
+      <circle cx="70" cy="45" r="4" fill="#1C1209"/>
+      <circle cx="90" cy="45" r="4" fill="#1C1209"/>
+      <path d="M70 62 Q80 68 90 62" stroke="#1C1209" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M50 42 Q54 20 80 20 Q106 20 112 40" stroke="#1C1209" stroke-width="2.5" fill="#1C1209"/>
+      <!-- laptop -->
+      <rect x="38" y="110" width="84" height="56" rx="4" fill="#1C1209" stroke="#1C1209" stroke-width="2"/>
+      <rect x="42" y="114" width="76" height="46" rx="2" fill="#D4820A" opacity=".8"/>
+      <line x1="50" y1="124" x2="70" y2="124" stroke="#F5EDD6" stroke-width="1.5" opacity=".7"/>
+      <line x1="50" y1="132" x2="80" y2="132" stroke="#F5EDD6" stroke-width="1.5" opacity=".7"/>
+      <line x1="50" y1="140" x2="68" y2="140" stroke="#F5EDD6" stroke-width="1.5" opacity=".7"/>
+      <!-- arms on laptop -->
+      <path d="M56 95 Q46 110 42 120" stroke="#1C1209" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <path d="M104 95 Q114 110 118 120" stroke="#1C1209" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    </svg>
+
+    <div class="menu-header-inner">
+      <div class="section-tag">Full Menu</div>
+      <h1 class="section-heading">What are we <span class="wavy">brewing</span>?</h1>
+      <p class="section-sub">Premium coffee and snacks, handcrafted for developers</p>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filter-bar">
+    <div class="filter-bar-inner">
+      <button class="f-btn active" onclick="filterMenu('all')">✦ All</button>
+      <button class="f-btn" onclick="filterMenu('coffee')">☕ Coffee</button>
+      <button class="f-btn" onclick="filterMenu('snacks')">🍪 Snacks</button>
+      <button class="f-btn" onclick="filterMenu('meals')">🍽 Meals</button>
+      <button class="f-btn" onclick="filterMenu('desserts')">🍰 Desserts</button>
+      <button class="f-btn" onclick="filterMenu('beverages')">🥤 Beverages</button>
+    </div>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="menu-layout">
+    <div id="menuItems" class="menu-grid">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Brewing the menu...</p>
+      </div>
+    </div>
+
+    <!-- CART -->
+    <aside class="cart-panel">
+      <div class="cart-title">
+        Your Order 🛒
+        <span class="cart-count" id="cartCount">0</span>
+      </div>
+
+      <div id="cartItems" class="cart-items">
+        <p class="empty-cart">Nothing here yet ☕</p>
+      </div>
+
+      <div class="cart-sep"></div>
+
+      <div class="cart-row"><span>Subtotal</span><span id="subtotal">₹0</span></div>
+      <div class="cart-row"><span>Delivery</span><span>₹50</span></div>
+      <div class="cart-row total"><span>Total</span><span id="total">₹50</span></div>
+
+      <input type="text" id="deliveryAddress" class="addr-input" placeholder="Drop your delivery address...">
+      <button class="btn btn-fill btn-full" onclick="checkout()">Place Order →</button>
+    </aside>
+  </div>
+</div>
+
+<script src="js/menu.js"></script>
+<script>
+  // Override displayMenuItems — keeps your JS logic, updates only the HTML shell
+  window.displayMenuItems = function(items) {
+    const menuContainer = document.getElementById('menuItems');
+    if (!items || items.length === 0) {
+      menuContainer.innerHTML = '<div class="loading-state">No items found 😕</div>';
+      return;
+    }
+    const bgs = ['bg1','bg2','bg3','bg4'];
+    const icons = [
+      // coffee cup
+      `<svg viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="22" rx="22" ry="8" fill="#F5EDD6" stroke="#1C1209" stroke-width="2.5"/><path d="M18 22 L24 66 Q40 74 56 66 L62 22Z" fill="#F5EDD6" stroke="#1C1209" stroke-width="2.5"/><path d="M62 32 Q74 32 74 44 Q74 56 62 56" stroke="#1C1209" stroke-width="2.5" stroke-linecap="round" fill="none"/><ellipse cx="40" cy="22" rx="18" ry="6" fill="#D4820A" opacity=".45"/></svg>`,
+      // glass
+      `<svg viewBox="0 0 80 80" fill="none"><path d="M22 16 L26 64 Q40 72 54 64 L58 16Z" fill="#F5EDD6" stroke="#1C1209" stroke-width="2.5"/><line x1="22" y1="16" x2="58" y2="16" stroke="#1C1209" stroke-width="2.5"/><path d="M24 32 Q40 40 56 32" stroke="#1C1209" stroke-width="1.5" fill="none" opacity=".4"/></svg>`,
+      // bowl / plate
+      `<svg viewBox="0 0 80 80" fill="none"><path d="M14 40 Q14 68 40 68 Q66 68 66 40Z" fill="#F5EDD6" stroke="#1C1209" stroke-width="2.5"/><path d="M10 40 L70 40" stroke="#1C1209" stroke-width="2.5" stroke-linecap="round"/><path d="M26 40 Q30 55 40 56 Q50 55 54 40" stroke="#D4820A" stroke-width="2" fill="none" opacity=".5"/></svg>`,
+      // mug / drink
+      `<svg viewBox="0 0 80 80" fill="none"><rect x="18" y="18" width="38" height="50" rx="5" fill="#F5EDD6" stroke="#1C1209" stroke-width="2.5"/><path d="M56 28 Q68 28 68 40 Q68 52 56 52" stroke="#1C1209" stroke-width="2.5" stroke-linecap="round" fill="none"/><line x1="18" y1="8" x2="18" y2="18" stroke="#1C1209" stroke-width="3" stroke-linecap="round"/><line x1="56" y1="8" x2="56" y2="18" stroke="#1C1209" stroke-width="3" stroke-linecap="round"/><ellipse cx="37" cy="18" rx="19" ry="6" fill="#D4820A" opacity=".4"/></svg>`
+    ];
+    menuContainer.innerHTML = items.map((item, i) => `
+      <div class="menu-card">
+        <div class="mc-img ${bgs[i%4]}">${icons[i%4]}</div>
+        <div class="mc-body">
+          <div class="mc-name">${item.name}</div>
+          <span class="mc-cat">${item.category}</span>
+          <div class="mc-desc">${item.description}</div>
+          <div class="mc-foot">
+            <span class="mc-price">₹${item.price}</span>
+            <button class="mc-add" onclick="addToCart('${item._id}','${item.name}',${item.price},'')">+ Add</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  };
+
+  // Override updateCartDisplay to sync count badge
+  const _origUpdateCart = typeof updateCartDisplay !== 'undefined' ? updateCartDisplay : null;
+  window.updateCartDisplay = function() {
+    if (_origUpdateCart) _origUpdateCart();
+    const count = Object.values(window.cart||{}).reduce((s,i)=>s+i.quantity,0);
+    const el = document.getElementById('cartCount');
+    if (el) el.textContent = count;
+  };
+
+  // Override toast notification
+  window.showNotification = function(msg) {
+    const t = document.createElement('div');
+    t.className = 'toast'; t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(()=>t.remove(), 2400);
+  };
+</script>
+</body>
+</html>
