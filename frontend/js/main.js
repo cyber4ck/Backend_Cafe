@@ -1,3 +1,6 @@
+const API_URL = window.location.origin; // Works both locally and when deployed
+
+
 // ==================== SMOOTH SCROLLING ==================== 
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function(e) {
