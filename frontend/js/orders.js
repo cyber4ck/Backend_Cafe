@@ -1,5 +1,5 @@
 const API_URL = 'http://localhost:5000';
-
+const API_URL = window.location.origin; // Works both locally and when deployed
 // Check authentication on page load
 window.addEventListener('load', () => {
   const token = localStorage.getItem('token');
