@@ -5,11 +5,9 @@ let menuItems = [];
 let filteredItems = [];
 let currentFilter = 'all';
 
-// Check authentication on page load
 window.addEventListener('load', () => {
   const token = localStorage.getItem('token');
   if (!token) {
-    // Not logged in, redirect to login
     window.location.href = 'login.html';
     return;
   }
@@ -27,7 +25,49 @@ window.addEventListener('load', () => {
   loadMenuItems();
   // Load cart from localStorage
   loadCartFromStorage();
+  // Load messages from admin
+  loadUserMessages();
 });
+
+// ==================== LOAD MESSAGES FROM ADMIN ====================
+async function loadUserMessages() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/admin/messages`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await response.json();
+    if (!response.ok) return;
+
+    const messages = data.messages || [];
+    const banner = document.getElementById('userMessagesBanner');
+
+    if (messages.length === 0) {
+      banner.innerHTML = '';
+      return;
+    }
+
+    banner.innerHTML = `
+      <div class="user-messages-banner">
+        <h4>📩 Messages from Backend Cafe</h4>
+        ${messages.slice().reverse().map(m => `
+          <div class="msg-item">
+            ${m.text}
+            <div class="msg-item-date">${new Date(m.createdAt).toLocaleString()}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+
+    // Mark as read
+    fetch(`${API_URL}/api/admin/messages/read`, {
+      method: 'PUT',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+  } catch (error) {
+    // Silently fail, messages are non-critical
+  }
+}
 
 // ==================== LOAD MENU ITEMS ====================
 async function loadMenuItems() {
