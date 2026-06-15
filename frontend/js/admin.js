@@ -1,5 +1,8 @@
 const API_URL = window.location.origin;
 let editingId = null;
+let currentTab = 'menu';
+let selectedUserId = null;
+let allUsers = [];
 
 // ==================== AUTH CHECK ====================
 window.addEventListener('load', () => {
@@ -23,8 +26,8 @@ window.addEventListener('load', () => {
     return;
   }
 
-  renderAdminUI();
-  loadMenuItems();
+  document.getElementById('adminTabs').style.display = 'flex';
+  switchTab('menu');
 });
 
 // ==================== LOGOUT ====================
@@ -34,8 +37,23 @@ function logout() {
   window.location.href = 'login.html';
 }
 
-// ==================== RENDER UI ====================
-function renderAdminUI() {
+// ==================== TAB SWITCHING ====================
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById('tabMenuBtn').classList.toggle('active', tab === 'menu');
+  document.getElementById('tabUsersBtn').classList.toggle('active', tab === 'users');
+
+  if (tab === 'menu') {
+    renderMenuTab();
+    loadMenuItems();
+  } else {
+    renderUsersTab();
+    loadUsers();
+  }
+}
+
+// ==================== MENU TAB ====================
+function renderMenuTab() {
   document.getElementById('adminContent').innerHTML = `
     <div class="admin-grid">
       <div class="admin-form-card">
@@ -88,7 +106,7 @@ function renderAdminUI() {
   document.getElementById('menuForm').addEventListener('submit', handleSubmit);
 }
 
-// ==================== LOAD ITEMS ====================
+// ==================== LOAD MENU ITEMS ====================
 async function loadMenuItems() {
   try {
     const token = localStorage.getItem('token');
@@ -105,7 +123,7 @@ async function loadMenuItems() {
   }
 }
 
-// ==================== DISPLAY ITEMS ====================
+// ==================== DISPLAY MENU ITEMS ====================
 function displayItems(items) {
   const list = document.getElementById('itemsList');
 
@@ -135,7 +153,7 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-// ==================== ADD / UPDATE ====================
+// ==================== ADD / UPDATE MENU ITEM ====================
 async function handleSubmit(e) {
   e.preventDefault();
   const token = localStorage.getItem('token');
@@ -182,7 +200,7 @@ async function handleSubmit(e) {
   }
 }
 
-// ==================== EDIT ====================
+// ==================== EDIT MENU ITEM ====================
 function editItem(item) {
   editingId = item._id;
   document.getElementById('formTitle').textContent = 'Edit Item';
@@ -207,7 +225,7 @@ function cancelEdit() {
   document.getElementById('cancelBtn').style.display = 'none';
 }
 
-// ==================== DELETE ====================
+// ==================== DELETE MENU ITEM ====================
 async function deleteItem(id) {
   if (!confirm('Delete this menu item?')) return;
 
@@ -226,5 +244,167 @@ async function deleteItem(id) {
   } catch (error) {
     messageDiv.classList.add('error');
     messageDiv.innerHTML = `✗ ${error.message}`;
+  }
+}
+
+// ==================== USERS TAB ====================
+function renderUsersTab() {
+  document.getElementById('adminContent').innerHTML = `
+    <div class="users-grid">
+      <div>
+        <div class="admin-list-title">All Users</div>
+        <div id="usersList"><p class="loading">Loading...</p></div>
+      </div>
+      <div id="userDetail">
+        <div class="user-detail-card">
+          <p class="loading">Select a user to view their orders and send a message.</p>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ==================== LOAD USERS ====================
+async function loadUsers() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/admin/users`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || 'Failed to load users');
+
+    allUsers = data.users || [];
+    displayUsers();
+  } catch (error) {
+    document.getElementById('usersList').innerHTML = `<p class="loading">Error: ${error.message}</p>`;
+  }
+}
+
+// ==================== DISPLAY USERS ====================
+function displayUsers() {
+  const list = document.getElementById('usersList');
+
+  if (allUsers.length === 0) {
+    list.innerHTML = '<p class="loading">No users found.</p>';
+    return;
+  }
+
+  list.innerHTML = allUsers.map(u => `
+    <div class="user-card ${u._id === selectedUserId ? 'selected' : ''}" onclick="selectUser('${u._id}')">
+      <div class="user-card-name">${escapeHtml(u.name)}</div>
+      <div class="user-card-email">${escapeHtml(u.email)}</div>
+      <span class="user-card-role ${u.role === 'admin' ? 'admin' : ''}">${u.role}</span>
+    </div>
+  `).join('');
+}
+
+// ==================== SELECT USER → SHOW ORDERS + MESSAGE BOX ====================
+async function selectUser(userId) {
+  selectedUserId = userId;
+  displayUsers();
+
+  const user = allUsers.find(u => u._id === userId);
+  const detail = document.getElementById('userDetail');
+  detail.innerHTML = `
+    <div class="user-detail-card">
+      <div class="user-detail-name">${escapeHtml(user.name)}</div>
+      <div class="user-detail-email">${escapeHtml(user.email)} · ${user.role}</div>
+
+      <div class="admin-list-title" style="font-size:1.1rem">Order History</div>
+      <div id="userOrders"><p class="loading">Loading orders...</p></div>
+
+      <div class="msg-box">
+        <div class="admin-list-title" style="font-size:1.1rem">Send a Message</div>
+        <textarea id="msgText" placeholder="Type a message to this user..."></textarea>
+        <button class="btn btn-fill btn-full" style="margin-top:8px" onclick="sendMessage('${userId}')">Send Message</button>
+        <div id="msgStatus"></div>
+
+        <div class="admin-list-title" style="font-size:1.1rem;margin-top:14px">Message History</div>
+        <div class="msg-history" id="msgHistory">
+          ${(user.messages && user.messages.length > 0)
+            ? user.messages.slice().reverse().map(m => `
+              <div class="msg-item">
+                ${escapeHtml(m.text)}
+                <div class="msg-item-date">${new Date(m.createdAt).toLocaleString()}</div>
+              </div>
+            `).join('')
+            : '<p class="loading">No messages sent yet.</p>'}
+        </div>
+      </div>
+    </div>
+  `;
+
+  loadUserOrders(userId);
+}
+
+// ==================== LOAD A USER'S ORDERS ====================
+async function loadUserOrders(userId) {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/admin/users/${userId}/orders`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || 'Failed to load orders');
+
+    const ordersDiv = document.getElementById('userOrders');
+    const orders = data.orders || [];
+
+    if (orders.length === 0) {
+      ordersDiv.innerHTML = '<p class="loading">No orders placed yet.</p>';
+      return;
+    }
+
+    ordersDiv.innerHTML = orders.map(o => `
+      <div class="order-mini">
+        <div class="order-mini-top">
+          <span>Order #${o._id.slice(-6)}</span>
+          <span>₹${o.totalAmount}</span>
+        </div>
+        <div class="order-mini-items">
+          ${(o.items || []).map(it => `${it.menuItem ? escapeHtml(it.menuItem.name) : 'Item'} x${it.quantity}`).join(', ')}
+        </div>
+        <span class="order-mini-status">${o.status}</span>
+        <div class="msg-item-date">${new Date(o.createdAt).toLocaleString()}</div>
+      </div>
+    `).join('');
+  } catch (error) {
+    document.getElementById('userOrders').innerHTML = `<p class="loading">Error: ${error.message}</p>`;
+  }
+}
+
+// ==================== SEND MESSAGE TO USER ====================
+async function sendMessage(userId) {
+  const text = document.getElementById('msgText').value.trim();
+  const statusDiv = document.getElementById('msgStatus');
+  statusDiv.innerHTML = '';
+
+  if (!text) {
+    statusDiv.innerHTML = '<p class="loading" style="color:var(--red)">Message cannot be empty.</p>';
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/api/admin/users/${userId}/message`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ text })
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || 'Failed to send message');
+
+    document.getElementById('msgText').value = '';
+    statusDiv.innerHTML = '<p class="loading" style="color:var(--green)">✓ Message sent!</p>';
+
+    // Refresh user list (to get updated messages) and re-select user
+    await loadUsers();
+    selectUser(userId);
+  } catch (error) {
+    statusDiv.innerHTML = `<p class="loading" style="color:var(--red)">✗ ${error.message}</p>`;
   }
 }
