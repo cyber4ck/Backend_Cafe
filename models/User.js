@@ -27,6 +27,14 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  messages: [
+    {
+      text: { type: String, required: true },
+      from: { type: String, default: 'admin' },
+      read: { type: Boolean, default: false },
+      createdAt: { type: Date, default: Date.now },
+    },
+  ],
 });
 
 // Create and export User model
