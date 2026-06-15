@@ -21,7 +21,11 @@
 <div class="admin-page">
   <div class="admin-header">
     <div class="section-tag">Admin Only</div>
-    <h1 class="hero-title" style="font-size:2rem">Manage the Menu ☕</h1>
+    <h1 class="hero-title" style="font-size:2rem">Admin Panel ☕</h1>
+    <div class="admin-tabs" id="adminTabs" style="display:none">
+      <button class="admin-tab active" id="tabMenuBtn" onclick="switchTab('menu')">Menu Items</button>
+      <button class="admin-tab" id="tabUsersBtn" onclick="switchTab('users')">Users &amp; Orders</button>
+    </div>
   </div>
 
   <div id="adminContent" class="admin-inner">
