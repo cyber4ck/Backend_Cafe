@@ -77,3 +77,78 @@
   max-width:480px;margin:80px auto;text-align:center;padding:32px;
   border:2.5px solid var(--ink);border-radius:var(--sr);background:var(--paper2);
 }
+
+/* TABS */
+.admin-tabs{display:flex;gap:10px;margin-top:18px}
+.admin-tab{
+  font-family:var(--hand);font-weight:700;font-size:1rem;
+  padding:8px 18px;border:2.5px solid var(--ink);border-radius:10px;
+  background:var(--paper);cursor:pointer;transition:transform .12s;
+}
+.admin-tab:hover{transform:translateY(-2px)}
+.admin-tab.active{background:var(--amber);color:var(--ink)}
+
+/* USERS LIST */
+.users-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:32px;align-items:start}
+@media (max-width:880px){.users-grid{grid-template-columns:1fr}}
+
+.user-card{
+  background:var(--paper);border:2.5px solid var(--ink);
+  border-radius:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer;
+  transition:transform .12s;
+}
+.user-card:hover{transform:translateY(-2px)}
+.user-card.selected{background:#FFF3C4}
+.user-card-name{font-weight:700;font-size:.98rem}
+.user-card-email{font-size:.82rem;color:var(--ink2)}
+.user-card-role{
+  display:inline-block;margin-top:4px;padding:2px 10px;border-radius:8px;
+  font-family:var(--hand);font-size:.75rem;font-weight:700;
+  background:#C4E8FF;border:2px solid var(--ink);
+}
+.user-card-role.admin{background:#E4C4FF}
+
+/* USER DETAIL PANEL */
+.user-detail-card{
+  background:var(--paper);border:2.5px solid var(--ink);
+  border-radius:var(--sr);padding:24px;position:relative;
+}
+.user-detail-card::after{
+  content:'';position:absolute;top:4px;left:3px;right:-4px;bottom:-5px;
+  border:2px solid var(--ink);border-radius:var(--sr);z-index:-1;
+}
+.user-detail-name{font-family:var(--hand);font-size:1.4rem;font-weight:700}
+.user-detail-email{font-size:.88rem;color:var(--ink2);margin-bottom:14px}
+
+.order-mini{
+  border:2px solid var(--ink);border-radius:10px;padding:10px 12px;margin-bottom:8px;
+}
+.order-mini-top{display:flex;justify-content:space-between;font-weight:700;font-size:.9rem}
+.order-mini-items{font-size:.8rem;color:var(--ink2);margin-top:4px}
+.order-mini-status{
+  display:inline-block;margin-top:4px;padding:2px 8px;border-radius:6px;
+  font-size:.72rem;font-weight:700;font-family:var(--hand);
+  background:#C4F0D4;border:1.5px solid var(--ink);
+}
+
+/* MESSAGE BOX */
+.msg-box{margin-top:18px;padding-top:14px;border-top:2px dashed var(--ink)}
+.msg-box textarea{
+  width:100%;min-height:60px;padding:10px 12px;border:2px solid var(--ink);
+  border-radius:10px;font-family:var(--body);font-size:.95rem;
+  background:var(--paper);color:var(--ink);resize:vertical;
+}
+.msg-history{margin-top:10px;max-height:160px;overflow-y:auto}
+.msg-item{
+  font-size:.82rem;padding:6px 10px;border:1.5px solid var(--ink);
+  border-radius:8px;margin-bottom:6px;background:var(--paper2);
+}
+.msg-item-date{font-size:.7rem;color:var(--ink2);margin-top:2px}
+
+/* USER-FACING MESSAGES (menu.html) */
+.user-messages-banner{
+  max-width:980px;margin:16px auto 0;padding:14px 18px;
+  border:2.5px solid var(--ink);border-radius:14px;background:#FFF3C4;
+}
+.user-messages-banner h4{font-family:var(--hand);font-size:1.1rem;margin-bottom:8px}
+.user-messages-banner .msg-item{background:var(--paper)}
